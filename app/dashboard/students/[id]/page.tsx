@@ -1,7 +1,7 @@
 "use client";
 
 /* Local-storage hydration must populate client state after mount. */
-/* eslint-disable react-hooks/set-state-in-effect, react/no-unescaped-entities */
+/* eslint-disable react-hooks/set-state-in-effect */
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -185,7 +185,7 @@ export default function StudentProfilePage() {
           Étudiant introuvable
         </h1>
         <p className="mt-2 text-sm text-slate-500">
-          Cet étudiant n'existe pas ou ses informations ne sont pas disponibles.
+          Cet étudiant n&apos;existe pas ou ses informations ne sont pas disponibles.
         </p>
         <Link
           href="/dashboard/students"
@@ -270,7 +270,7 @@ export default function StudentProfilePage() {
       <section className="grid gap-6 lg:grid-cols-3">
         <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:col-span-2">
           <h2 className="text-lg font-bold text-slate-900">
-            Informations de l'étudiant
+            Informations de l&apos;étudiant
           </h2>
           <p className="mt-1 text-sm text-slate-500">
             Informations générales et identifiants.
@@ -289,7 +289,7 @@ export default function StudentProfilePage() {
         <div className="flex flex-col items-center rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm">
           <h2 className="text-lg font-bold text-slate-900">QR Code</h2>
           <p className="mt-1 text-sm text-slate-500">
-            Code d'identification de l'étudiant
+            Code d&apos;identification de l&apos;étudiant
           </p>
 
           <div className="mt-5 rounded-2xl border border-slate-100 bg-white p-4">
@@ -354,7 +354,7 @@ export default function StudentProfilePage() {
                   Modifier le profil
                 </h2>
                 <p className="mt-1 text-sm text-slate-500">
-                  Modifiez les informations de l'étudiant.
+                  Modifiez les informations de l&apos;étudiant.
                 </p>
               </div>
 
@@ -433,7 +433,7 @@ export default function StudentProfilePage() {
 
   {classes.length === 0 && (
     <p className="mt-2 text-xs text-amber-700">
-      Aucune classe enregistrée. Ajoutez d'abord une classe dans la page Classes.
+      Aucune classe enregistrée. Ajoutez d&apos;abord une classe dans la page Classes.
     </p>
   )}
 </div>
