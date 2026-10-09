@@ -4,6 +4,7 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 
 import { useEffect, useState, type FormEvent } from "react";
+import { QRCodeSVG } from "qrcode.react";
 
 type Student = {
   id: string;
@@ -50,6 +51,7 @@ export default function StudentsPage() {
   const [search, setSearch] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [message, setMessage] = useState("");
+  const [cardStudent, setCardStudent] = useState<Student | null>(null);
 
   const [form, setForm] = useState({
     firstName: "",
@@ -184,6 +186,56 @@ export default function StudentsPage() {
     }
   }
 
+
+  function printStudentCard() {
+    window.print();
+  }
+
+  async function shareStudentCard(student: Student) {
+    const messageText = `Carte d'élève — ${student.name}\nIdentifiant : ${student.id}\nClasse : ${student.className}\nSignature : ${student.signature}\nStatut : ${student.status}`;
+    const qrElement = document.getElementById(`student-card-qr-${student.id}`);
+
+    if (qrElement && typeof navigator.share === "function" && typeof navigator.canShare === "function") {
+      try {
+        const svgMarkup = new XMLSerializer().serializeToString(qrElement);
+        const svgBlob = new Blob([svgMarkup], { type: "image/svg+xml;charset=utf-8" });
+        const svgUrl = URL.createObjectURL(svgBlob);
+        const image = new Image();
+
+        await new Promise<void>((resolve, reject) => {
+          image.onload = () => resolve();
+          image.onerror = () => reject(new Error("Impossible de créer l'image du QR code."));
+          image.src = svgUrl;
+        });
+
+        const canvas = document.createElement("canvas");
+        canvas.width = 600;
+        canvas.height = 600;
+        const context = canvas.getContext("2d");
+
+        if (!context) throw new Error("Canvas indisponible.");
+        context.fillStyle = "#ffffff";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.drawImage(image, 20, 20, 560, 560);
+        URL.revokeObjectURL(svgUrl);
+
+        const blob = await new Promise<Blob>((resolve, reject) => {
+          canvas.toBlob((result) => result ? resolve(result) : reject(new Error("Export image impossible.")), "image/png");
+        });
+        const file = new File([blob], `QR-${student.id}.png`, { type: "image/png" });
+
+        if (navigator.canShare({ files: [file] })) {
+          await navigator.share({ title: `Carte d'élève — ${student.name}`, text: messageText, files: [file] });
+          return;
+        }
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+      }
+    }
+
+    window.open(`https://wa.me/?text=${encodeURIComponent(messageText)}`, "_blank", "noopener,noreferrer");
+  }
+
   if (!ready) {
     return <p className="p-8 text-slate-500">Chargement des étudiants...</p>;
   }
@@ -307,12 +359,21 @@ export default function StudentsPage() {
                   </td>
 
                   <td className="px-6 py-4 text-right">
-                    <a
-                      href={`/dashboard/students/${student.id}`}
-                      className="rounded-lg px-3 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50"
-                    >
-                      Voir profil
-                    </a>
+                    <div className="flex items-center justify-end gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setCardStudent(student)}
+                        className="rounded-lg bg-indigo-50 px-3 py-2 text-sm font-semibold text-indigo-700 hover:bg-indigo-100"
+                      >
+                        Carte / QR
+                      </button>
+                      <a
+                        href={`/dashboard/students/${student.id}`}
+                        className="rounded-lg px-3 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50"
+                      >
+                        Voir profil
+                      </a>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -333,6 +394,92 @@ export default function StudentsPage() {
           </table>
         </div>
       </section>
+
+
+      {cardStudent && (
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center overflow-y-auto bg-slate-950/60 p-4"
+          onClick={() => setCardStudent(null)}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="student-card-title"
+            className="my-6 w-full max-w-xl rounded-3xl bg-white p-5 shadow-2xl sm:p-7"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="mb-5 flex items-start justify-between gap-3 print:hidden">
+              <div>
+                <h2 id="student-card-title" className="text-xl font-bold text-slate-900">Carte d'élève</h2>
+                <p className="mt-1 text-sm text-slate-500">Imprimez la carte ou partagez le QR code sur WhatsApp.</p>
+              </div>
+              <button type="button" onClick={() => setCardStudent(null)} aria-label="Fermer" className="rounded-lg px-3 py-1 text-xl text-slate-500 hover:bg-slate-100">×</button>
+            </div>
+
+            <div id="student-card-print" className="mx-auto max-w-[440px] overflow-hidden rounded-2xl border-2 border-indigo-700 bg-white text-slate-900">
+              <div className="bg-indigo-700 px-5 py-4 text-white">
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-indigo-100">SchoolAttend</p>
+                <h3 className="mt-1 text-xl font-extrabold">CARTE D'ÉLÈVE</h3>
+              </div>
+              <div className="grid grid-cols-[1fr_auto] items-center gap-4 p-5">
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Nom complet</p>
+                  <p className="mt-1 break-words text-lg font-bold">{cardStudent.name}</p>
+                  <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-slate-500">Identifiant</p>
+                  <p className="mt-1 break-all font-mono text-sm font-bold">{cardStudent.id}</p>
+                  <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Classe</p>
+                  <p className="mt-1 text-sm font-semibold">{cardStudent.className}</p>
+                  <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Signature</p>
+                  <p className="mt-1 break-all font-mono text-xs">{cardStudent.signature}</p>
+                </div>
+                <div className="rounded-xl border border-slate-200 bg-white p-2">
+                  <QRCodeSVG
+                    id={`student-card-qr-${cardStudent.id}`}
+                    value={JSON.stringify({ studentId: cardStudent.id, signature: cardStudent.signature })}
+                    size={116}
+                    level="H"
+                    includeMargin
+                  />
+                </div>
+              </div>
+              <div className="flex items-center justify-between border-t border-slate-200 bg-slate-50 px-5 py-3 text-xs">
+                <span className="font-semibold">Statut : {cardStudent.status}</span>
+                <span className="text-slate-500">Gestion scolaire</span>
+              </div>
+            </div>
+
+            <div className="mt-5 grid gap-3 sm:grid-cols-2 print:hidden">
+              <button type="button" onClick={printStudentCard} className="rounded-xl bg-indigo-600 px-4 py-3 text-sm font-semibold text-white hover:bg-indigo-700">
+                Imprimer la carte
+              </button>
+              <button type="button" onClick={() => void shareStudentCard(cardStudent)} className="rounded-xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white hover:bg-emerald-700">
+                Partager sur WhatsApp
+              </button>
+            </div>
+            <p className="mt-3 text-center text-xs text-slate-500 print:hidden">
+              Si le partage de fichiers n'est pas pris en charge par votre appareil, WhatsApp s'ouvrira avec les informations de l'élève.
+            </p>
+            <style jsx global>{`
+              @media print {
+                body * { visibility: hidden !important; }
+                #student-card-print, #student-card-print * { visibility: visible !important; }
+                #student-card-print {
+                  position: fixed !important;
+                  left: 50% !important;
+                  top: 20mm !important;
+                  transform: translateX(-50%) !important;
+                  width: 90mm !important;
+                  max-width: 90mm !important;
+                  box-shadow: none !important;
+                  -webkit-print-color-adjust: exact !important;
+                  print-color-adjust: exact !important;
+                }
+                @page { size: auto; margin: 10mm; }
+              }
+            `}</style>
+          </div>
+        </div>
+      )}
 
       {showForm && (
         <div
