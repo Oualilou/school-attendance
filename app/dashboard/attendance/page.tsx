@@ -454,7 +454,7 @@ export default function AttendancePage() {
                     </td>
 
                     <td className="px-6 py-4 text-sm text-slate-600">
-                      {record.className}
+                      {students.find((student) => student.id === record.studentId)?.className || record.className || "—"}
                     </td>
 
                     <td className="px-6 py-4 text-sm text-slate-600">
