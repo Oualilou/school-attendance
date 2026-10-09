@@ -184,12 +184,16 @@ export default function AttendancePage() {
 
     const updatedAttendance = [newRecord, ...attendance];
 
-    setAttendance(updatedAttendance);
-
-    localStorage.setItem(
-      "school_attendance",
-      JSON.stringify(updatedAttendance)
-    );
+    try {
+      localStorage.setItem(
+        "school_attendance",
+        JSON.stringify(updatedAttendance)
+      );
+      setAttendance(updatedAttendance);
+    } catch {
+      setMessage("Impossible d’enregistrer la présence dans ce navigateur.");
+      return;
+    }
 
     setMessage(
       `✅ ${selectedStudent.name} a été marqué comme ${status.toLowerCase()}.`
@@ -280,17 +284,28 @@ export default function AttendancePage() {
           </h2>
 
           {!selectedStudent ? (
-            <div className="mt-6 flex min-h-72 items-center justify-center rounded-2xl bg-slate-50 text-center">
+            <div className="mt-6 space-y-5">
+              <div className="flex min-h-40 flex-col items-center justify-center rounded-2xl bg-slate-50 px-4 py-6 text-center">
+                <div className="text-4xl">👨‍🎓</div>
+                <p className="mt-3 font-medium text-slate-700">Aucun étudiant sélectionné</p>
+                <p className="mt-1 text-sm text-slate-500">Scannez un QR Code ou sélectionnez un étudiant manuellement.</p>
+              </div>
               <div>
-                <div className="text-5xl">👨‍🎓</div>
-
-                <p className="mt-3 font-medium text-slate-700">
-                  Aucun étudiant détecté
-                </p>
-
-                <p className="mt-1 text-sm text-slate-500">
-                  Scannez un QR Code pour continuer.
-                </p>
+                <label htmlFor="manual-student" className="mb-2 block text-sm font-medium text-slate-700">Sélection manuelle</label>
+                <select
+                  id="manual-student"
+                  value=""
+                  onChange={(event) => {
+                    const student = students.find((item) => item.id === event.target.value);
+                    if (student) setSelectedStudent(student);
+                  }}
+                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                >
+                  <option value="">Choisir un étudiant…</option>
+                  {students.filter((student) => student.status === "Actif").map((student) => (
+                    <option key={student.id} value={student.id}>{student.name} — {student.className}</option>
+                  ))}
+                </select>
               </div>
             </div>
           ) : (
