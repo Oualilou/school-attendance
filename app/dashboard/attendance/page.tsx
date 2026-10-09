@@ -1,7 +1,7 @@
 "use client";
 
 /* Local-storage hydration must populate client state after mount. */
-/* eslint-disable react-hooks/set-state-in-effect, react/no-unescaped-entities */
+/* eslint-disable react-hooks/set-state-in-effect */
 
 import { useEffect, useRef, useState } from "react";
 import type { Html5Qrcode } from "html5-qrcode";
@@ -220,7 +220,7 @@ export default function AttendancePage() {
         </h1>
 
         <p className="mt-1 text-sm text-slate-500">
-          Scannez le QR Code d'un étudiant pour enregistrer sa présence.
+          Scannez le QR Code d&apos;un étudiant pour enregistrer sa présence.
         </p>
       </div>
 
@@ -240,7 +240,7 @@ export default function AttendancePage() {
               </h2>
 
               <p className="mt-1 text-sm text-slate-500">
-                Scannez le QR Code de l'étudiant.
+                Scannez le QR Code de l&apos;étudiant.
               </p>
             </div>
 
