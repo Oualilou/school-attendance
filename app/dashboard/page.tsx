@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const stats = [
   {
     title: "Total Students",
@@ -64,12 +66,12 @@ export default function DashboardPage() {
             </p>
           </div>
 
-          <button
-            type="button"
-            className="rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
+          <Link
+            href="/dashboard/students"
+            className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
           >
             + Ajouter un étudiant
-          </button>
+          </Link>
         </div>
       </section>
 
@@ -103,7 +105,7 @@ export default function DashboardPage() {
       </section>
 
       <section className="grid gap-6 xl:grid-cols-3">
-        <div className="xl:col-span-2 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="min-w-0 rounded-2xl xl:col-span-2 border border-slate-200 bg-white p-6 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-lg font-semibold text-slate-900">
