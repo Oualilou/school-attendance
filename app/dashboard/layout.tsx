@@ -33,7 +33,7 @@ export default function DashboardLayout({
             <Link href="/dashboard" className="text-xl font-bold tracking-tight text-slate-900">
               School<span className="text-indigo-600">Attend</span>
             </Link>
-            <p className="text-xs text-slate-500">School management system</p>
+            <p className="text-xs text-slate-500">Système de gestion scolaire</p>
           </div>
         </div>
 
