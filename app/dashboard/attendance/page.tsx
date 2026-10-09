@@ -55,22 +55,25 @@ export default function AttendancePage() {
   const [scannerStarted, setScannerStarted] = useState(false);
 
   useEffect(() => {
-    const savedStudents = localStorage.getItem("school_students");
+    try {
+      const savedStudents = localStorage.getItem("school_students");
+      if (savedStudents) {
+        const parsedStudents: unknown = JSON.parse(savedStudents);
+        setStudents(Array.isArray(parsedStudents) ? parsedStudents as Student[] : defaultStudents);
+      } else {
+        setStudents(defaultStudents);
+        localStorage.setItem("school_students", JSON.stringify(defaultStudents));
+      }
 
-    if (savedStudents) {
-      setStudents(JSON.parse(savedStudents));
-    } else {
+      const savedAttendance = localStorage.getItem("school_attendance");
+      if (savedAttendance) {
+        const parsedAttendance: unknown = JSON.parse(savedAttendance);
+        setAttendance(Array.isArray(parsedAttendance) ? parsedAttendance as AttendanceRecord[] : []);
+      }
+    } catch {
       setStudents(defaultStudents);
-      localStorage.setItem(
-        "school_students",
-        JSON.stringify(defaultStudents)
-      );
-    }
-
-    const savedAttendance = localStorage.getItem("school_attendance");
-
-    if (savedAttendance) {
-      setAttendance(JSON.parse(savedAttendance));
+      setAttendance([]);
+      setMessage("Certaines données locales sont illisibles. Vérifiez les données enregistrées dans ce navigateur.");
     }
   }, []);
 
