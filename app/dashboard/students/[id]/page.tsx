@@ -1,5 +1,8 @@
 "use client";
 
+/* Local-storage hydration must populate client state after mount. */
+/* eslint-disable react-hooks/set-state-in-effect, react/no-unescaped-entities */
+
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
