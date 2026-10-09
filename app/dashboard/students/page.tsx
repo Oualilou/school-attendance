@@ -416,35 +416,21 @@ export default function StudentsPage() {
               <button type="button" onClick={() => setCardStudent(null)} aria-label="Fermer" className="rounded-lg px-3 py-1 text-xl text-slate-500 hover:bg-slate-100">×</button>
             </div>
 
-            <div id="student-card-print" className="mx-auto max-w-[440px] overflow-hidden rounded-2xl border-2 border-indigo-700 bg-white text-slate-900">
-              <div className="bg-indigo-700 px-5 py-4 text-white">
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-indigo-100">SchoolAttend</p>
-                <h3 className="mt-1 text-xl font-extrabold">CARTE D'ÉLÈVE</h3>
+            <div id="student-card-print" className="mx-auto flex min-h-[230px] w-full max-w-[340px] flex-col items-center justify-center gap-3 rounded-xl border border-slate-300 bg-white p-5 text-center text-slate-900 shadow-sm">
+              <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Nom de l'élève</p>
+              <h3 className="break-words text-xl font-bold">{cardStudent.name}</h3>
+              <div className="rounded-lg border border-slate-200 bg-white p-2">
+                <QRCodeSVG
+                  id={`student-card-qr-${cardStudent.id}`}
+                  value={JSON.stringify({ studentId: cardStudent.id, signature: cardStudent.signature })}
+                  size={132}
+                  level="H"
+                  includeMargin
+                />
               </div>
-              <div className="grid grid-cols-[1fr_auto] items-center gap-4 p-5">
-                <div className="min-w-0">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Nom complet</p>
-                  <p className="mt-1 break-words text-lg font-bold">{cardStudent.name}</p>
-                  <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-slate-500">Identifiant</p>
-                  <p className="mt-1 break-all font-mono text-sm font-bold">{cardStudent.id}</p>
-                  <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Classe</p>
-                  <p className="mt-1 text-sm font-semibold">{cardStudent.className}</p>
-                  <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Signature</p>
-                  <p className="mt-1 break-all font-mono text-xs">{cardStudent.signature}</p>
-                </div>
-                <div className="rounded-xl border border-slate-200 bg-white p-2">
-                  <QRCodeSVG
-                    id={`student-card-qr-${cardStudent.id}`}
-                    value={JSON.stringify({ studentId: cardStudent.id, signature: cardStudent.signature })}
-                    size={116}
-                    level="H"
-                    includeMargin
-                  />
-                </div>
-              </div>
-              <div className="flex items-center justify-between border-t border-slate-200 bg-slate-50 px-5 py-3 text-xs">
-                <span className="font-semibold">Statut : {cardStudent.status}</span>
-                <span className="text-slate-500">Gestion scolaire</span>
+              <div className="w-full">
+                <p className="text-xs font-medium text-slate-500">Code signature</p>
+                <p className="mt-1 break-all font-mono text-sm font-bold tracking-wide">{cardStudent.signature}</p>
               </div>
             </div>
 
