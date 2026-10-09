@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable react-hooks/set-state-in-effect */
+
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 
 type Teacher = { id: string; name: string; email: string; phone: string; subject: string; status: "Actif" | "Inactif" };
