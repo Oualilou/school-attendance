@@ -1,6 +1,10 @@
 "use client";
 
+/* Local-storage hydration must populate client state after mount. */
+/* eslint-disable react-hooks/set-state-in-effect, react/no-unescaped-entities */
+
 import { useEffect, useRef, useState } from "react";
+import type { Html5Qrcode } from "html5-qrcode";
 
 type Student = {
   id: string;
@@ -42,7 +46,7 @@ const defaultStudents: Student[] = [
 ];
 
 export default function AttendancePage() {
-  const scannerRef = useRef<any>(null);
+  const scannerRef = useRef<Html5Qrcode | null>(null);
 
   const [students, setStudents] = useState<Student[]>([]);
   const [attendance, setAttendance] = useState<AttendanceRecord[]>([]);
