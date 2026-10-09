@@ -1,7 +1,7 @@
 "use client";
 
 /* Local-storage hydration must populate client state after mount. */
-/* eslint-disable react-hooks/set-state-in-effect, react/no-unescaped-entities */
+/* eslint-disable react-hooks/set-state-in-effect */
 
 import { useEffect, useState, type FormEvent } from "react";
 
@@ -355,7 +355,7 @@ export default function StudentsPage() {
                   Ajouter un étudiant
                 </h2>
                 <p className="mt-1 text-sm text-slate-500">
-                  Créez le profil de base de l'étudiant.
+                  Créez le profil de base de l&apos;étudiant.
                 </p>
               </div>
 
@@ -456,7 +456,7 @@ export default function StudentsPage() {
 
                   {classes.length === 0 && (
                     <p className="mt-2 text-xs text-amber-700">
-                      Aucune classe enregistrée. Ajoutez d'abord une classe
+                      Aucune classe enregistrée. Ajoutez d&apos;abord une classe
                       dans la rubrique Classes.
                     </p>
                   )}
@@ -492,7 +492,7 @@ export default function StudentsPage() {
                   disabled={classes.length === 0}
                   className="rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  Créer l'étudiant
+                  Créer l&apos;étudiant
                 </button>
               </div>
             </form>
