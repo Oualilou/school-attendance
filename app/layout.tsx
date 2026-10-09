@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "School Attendance",
-  description: "School Attendance Management System",
+  title: "SchoolAttend | Gestion scolaire",
+  description: "Plateforme de gestion scolaire : étudiants, professeurs, classes et présences.",
 };
 
 export default function RootLayout({
