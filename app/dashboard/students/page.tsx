@@ -417,7 +417,7 @@ export default function StudentsPage() {
             </div>
 
             <div id="student-card-print" className="mx-auto flex min-h-[230px] w-full max-w-[340px] flex-col items-center justify-center gap-3 rounded-xl border border-slate-300 bg-white p-5 text-center text-slate-900 shadow-sm">
-              <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Nom de l'élève</p>
+              <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Nom de l&apos;élève</p>
               <h3 className="break-words text-xl font-bold">{cardStudent.name}</h3>
               <div className="rounded-lg border border-slate-200 bg-white p-2">
                 <QRCodeSVG
