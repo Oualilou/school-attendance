@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SchoolAttend — gestion scolaire
 
-## Getting Started
+Application Next.js pour gérer les élèves, les professeurs, les classes, les présences par QR Code et les documents scolaires.
 
-First, run the development server:
+## Prérequis
+
+- Node.js LTS et npm
+- Un projet Supabase
+
+## Lancer l'application
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Ouvrez http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Préparer Supabase
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Créez un projet dans [Supabase](https://supabase.com/).
+2. Dans le projet, ouvrez **SQL Editor** et exécutez le fichier `supabase/migrations/20261010000000_initial_schema.sql`.
+3. Dans **Project Settings → API**, copiez l'URL du projet et la clé publique (publishable/anon).
+4. À la racine du dépôt, copiez `.env.example` vers `.env.local` et remplissez les valeurs :
 
-## Learn More
+   ```dotenv
+   NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+5. Redémarrez le serveur Next.js après avoir modifié les variables d'environnement.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Sécurité :** n'ajoutez jamais une clé `service_role` ou une clé secrète dans une variable `NEXT_PUBLIC_*`, dans le navigateur ou dans Git. La clé publique est conçue pour être utilisée avec les politiques RLS du schéma.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Rôles et accès
 
-## Deploy on Vercel
+- Les nouveaux comptes authentifiés reçoivent le rôle `teacher` par défaut.
+- Pour promouvoir le premier administrateur, créez son utilisateur dans Supabase Authentication, puis exécutez cette requête SQL en remplaçant l'adresse :
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+  ```sql
+  update public.profiles
+  set role = 'admin'
+  where id = (
+    select id from auth.users
+    where email = 'admin@votre-ecole.ma'
+    limit 1
+  );
+  ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Le schéma active Row Level Security (RLS). Les enseignants peuvent consulter les classes et élèves et enregistrer les présences; la gestion des élèves, classes, professeurs et documents est réservée à l'administrateur.
+
+## État actuel et migration des données
+
+Le schéma Supabase et les politiques RLS sont préparés dans `supabase/migrations/`. **Les pages actuelles utilisent encore `localStorage` : elles ne sont pas encore connectées à Supabase.** Ne supprimez pas les données du navigateur et ne considérez pas le déploiement comme prêt pour une utilisation réelle avant la migration des pages, l'import des données existantes et les tests des permissions.
+
+Les données enregistrées dans `localStorage` ne sont pas automatiquement transférées vers Supabase. Il faudra effectuer cette migration explicitement avant le basculement.
+
+## Vérifications
+
+```bash
+npm run lint
+npm run build
+```
