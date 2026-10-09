@@ -78,7 +78,8 @@ export default function DocumentsPage() {
       setMessage("Autorisez les fenêtres contextuelles pour imprimer ce document.");
       return;
     }
-    const safe = (value: string) => value.replace(/[&<>"]/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[character] ?? character));
+    const entities: Record<string, string> = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"' : "&quot;" };
+    const safe = (value: string) => value.replace(/[&<>"]/g, (character) => entities[character] ?? character);
     printWindow.document.write(`<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>${safe(doc.type)}</title><style>body{font-family:Arial,sans-serif;color:#172033;margin:64px;line-height:1.7}header{border-bottom:3px solid #4338ca;padding-bottom:20px}h1{font-size:28px}main{margin-top:50px;min-height:300px}footer{margin-top:60px;border-top:1px solid #ddd;padding-top:18px;font-size:12px;color:#667085}.ref{color:#4338ca;font-weight:bold}</style></head><body><header><strong>SchoolAttend</strong><p>Établissement scolaire</p></header><main><h1>${safe(doc.type)}</h1><p>Le présent document concerne :</p><h2>${safe(doc.studentName)}</h2><p>Document enregistré le ${safe(doc.createdAt)}.</p>${doc.title !== doc.type ? `<p>${safe(doc.title)}</p>` : ""}<p class="ref">Référence : ${safe(doc.reference)}</p><p>Ce modèle est un aperçu imprimable à compléter et valider par l’administration de l’établissement.</p></main><footer>SchoolAttend — document généré depuis le registre local. Une validation administrative peut être nécessaire.</footer><script>window.onload=()=>window.print()<\/script></body></html>`);
     printWindow.document.close();
   }
