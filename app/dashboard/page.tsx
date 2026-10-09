@@ -106,7 +106,7 @@ export default function DashboardPage() {
 
       <section className="grid gap-6 xl:grid-cols-3">
         <div className="min-w-0 rounded-2xl xl:col-span-2 border border-slate-200 bg-white p-6 shadow-sm">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="text-lg font-semibold text-slate-900">
                 Activité récente
@@ -118,7 +118,7 @@ export default function DashboardPage() {
             </div>
 
             <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-500">
-              Aujourd'hui
+              Aujourd&apos;hui
             </span>
           </div>
 
