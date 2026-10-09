@@ -397,7 +397,7 @@ export default function AttendancePage() {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left">
+            <table className="w-full min-w-[640px] text-left">
               <thead className="border-b border-slate-200 bg-slate-50">
                 <tr>
                   <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wide text-slate-500">
