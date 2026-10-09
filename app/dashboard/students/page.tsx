@@ -249,11 +249,11 @@ export default function StudentsPage() {
             <thead className="bg-slate-50">
               <tr className="border-b border-slate-200 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
                 <th className="px-6 py-4">Étudiant</th>
-                <th className="px-6 py-4">Student ID</th>
+                <th className="px-6 py-4">Identifiant</th>
                 <th className="px-6 py-4">Classe</th>
                 <th className="px-6 py-4">Signature</th>
                 <th className="px-6 py-4">Statut</th>
-                <th className="px-6 py-4 text-right">Action</th>
+                <th className="px-6 py-4 text-right">Actions</th>
               </tr>
             </thead>
 
@@ -468,7 +468,7 @@ export default function StudentsPage() {
                   Identifiants automatiques
                 </p>
                 <p className="mt-1 text-xs leading-5 text-indigo-700">
-                  Le Student ID et la Signature seront générés automatiquement.
+                  L’identifiant étudiant et la signature seront générés automatiquement.
                 </p>
               </div>
 
