@@ -410,7 +410,7 @@ export default function StudentsPage() {
           >
             <div className="mb-5 flex items-start justify-between gap-3 print:hidden">
               <div>
-                <h2 id="student-card-title" className="text-xl font-bold text-slate-900">Carte d'élève</h2>
+                <h2 id="student-card-title" className="text-xl font-bold text-slate-900">Carte d&apos;élève</h2>
                 <p className="mt-1 text-sm text-slate-500">Imprimez la carte ou partagez le QR code sur WhatsApp.</p>
               </div>
               <button type="button" onClick={() => setCardStudent(null)} aria-label="Fermer" className="rounded-lg px-3 py-1 text-xl text-slate-500 hover:bg-slate-100">×</button>
@@ -443,7 +443,7 @@ export default function StudentsPage() {
               </button>
             </div>
             <p className="mt-3 text-center text-xs text-slate-500 print:hidden">
-              Si le partage de fichiers n'est pas pris en charge par votre appareil, WhatsApp s'ouvrira avec les informations de l'élève.
+              Si le partage de fichiers n&apos;est pas pris en charge par votre appareil, WhatsApp s&apos;ouvrira avec les informations de l&apos;élève.
             </p>
             <style jsx global>{`
               @media print {
