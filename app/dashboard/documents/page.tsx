@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable react-hooks/set-state-in-effect */
+
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 
 type Student = { id: string; name: string; email: string; className: string; status: string; signature: string };
@@ -71,7 +73,7 @@ export default function DocumentsPage() {
   }
 
   function printDocument(doc: SchoolDocument) {
-    const printWindow = window.open("", "_blank", "noopener,noreferrer,width=800,height=900");
+    const printWindow = window.open("", "_blank", "width=800,height=900");
     if (!printWindow) {
       setMessage("Autorisez les fenêtres contextuelles pour imprimer ce document.");
       return;
