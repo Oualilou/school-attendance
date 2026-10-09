@@ -1,5 +1,8 @@
 "use client";
 
+/* Local-storage hydration must populate client state after mount. */
+/* eslint-disable react-hooks/set-state-in-effect, react/no-unescaped-entities */
+
 import { useEffect, useState, type FormEvent } from "react";
 
 type Student = {
